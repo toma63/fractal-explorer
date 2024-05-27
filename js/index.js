@@ -1,0 +1,92 @@
+
+// Get the canvas element and its context
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+let rMin = -2.2;
+let rMax = 1;
+let rRangeSize = rMax - rMin;
+
+let iMin = -1.2;
+let iMax = 1.2;
+let iDomainSize = iMax - iMin;
+
+let displayRatio = iDomainSize / rRangeSize;
+
+// Set the width and height of the canvas
+let canvasWidth = window.innerWidth - 100;
+canvas.width = canvasWidth;
+let canvasHeight = canvasWidth * displayRatio;
+canvas.height = canvasHeight;
+
+let rStep = rRangeSize / canvasWidth;
+let iStep = iDomainSize / canvasHeight;
+
+// Create an ImageData object
+let imageData = ctx.createImageData(canvasWidth, canvasHeight);
+
+// Function to set a pixel's color in the ImageData object
+function setPixel(imageData, x, y, r, g, b, a) {
+  let index = (x + y * imageData.width) * 4;
+  imageData.data[index+0] = r;
+  imageData.data[index+1] = g;
+  imageData.data[index+2] = b;
+  imageData.data[index+3] = a;
+}
+
+// helper function sums squares of real and imag
+function sumSq(cnum) {
+    return cnum.re * cnum.re + cnum.im * cnum.im;
+}
+
+// the the escape count for an iteration z = z^2 + c
+function escapeCount(z = math.complex(0, 0), c = math.complex(0, 0), maxIterations = 1000) {
+    let iterations = 1;
+    while (iterations <= maxIterations && sumSq(z) < 4) {
+        iterations++
+        z = math.add(math.multiply(z, z), c);
+    }
+    //console.log("iterations: ", iterations);
+    return iterations;
+}
+
+// select a color based on iteration count
+function colorMap(iterations) {
+    if (iterations < 10) {
+        return [0, 0, 30];
+    } else if (iterations < 20) {
+        return [15, 0, 35];
+    } else if (iterations < 30) {
+        return [30, 0, 80];
+    } else if (iterations < 40) {
+        return [90, 0, 255];
+    } else if (iterations < 50) {
+        return [0, 40, 255];
+    } else if (iterations < 70) {
+        return [0, 140, 255];
+    } else if (iterations < 100) {
+        return [0, 255, 230];
+    } else if (iterations < 200) {
+        return [50, 255, 0];
+    } else if (iterations < 500) {
+        return [255, 240, 0];
+    } else if (iterations < 1000) {
+        return [255, 155, 0];
+    } else {
+        return [0, 0, 0];
+    }
+
+}
+
+// iterate in the complex plain window and color pixels
+// based on the trajectory at each location
+for (let x = 0 ; x < canvasWidth ; x++) {
+    for (let y = 0 ; y < canvasWidth ; y++) {
+        rbgTuple = colorMap(escapeCount(math.complex(0, 0), math.complex(rMin + x * rStep, iMin + y * iStep)));
+        //console.log(`x: ${x} y: ${y} rbg: ${rbgTuple}`);
+        setPixel(imageData, x, y, ...rbgTuple, 255);
+    }
+}
+
+// Render the ImageData object to the canvas
+ctx.putImageData(imageData, 0, 0);
