@@ -13,11 +13,25 @@ label {
     display: inline;
     padding-right: 10px;
     padding-left: 10px;
-    width: 5em;
+    width: 10em;
 }
-.v-label {
-    display: inline-block;
-    padding-right: 10px;
-    padding-left: 10px;
-    width: 12em;  
+input {
+    width: 4em;
 }
+
+@media only screen and (max-width: 800px) {
+    .form {
+        flex-direction: column;
+    }
+    label {
+        display: inline-block;
+    }
+    .submit-button {
+        width: 12em;
+        margin-top: 1em;    
+    }
+    #main-heading {
+        text-align: left;
+    }
+}
+
