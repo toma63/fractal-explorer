@@ -137,6 +137,8 @@ canvas.addEventListener('mouseup', (event) => {
 const boundsForm = document.querySelector("[name='bounds']");
 const juliaForm = document.querySelector("[name='julia-constant']");
 const mandelButton = document.querySelector("[name='mandelbrot']");
+const currentDisplayHeading = document.getElementById('current-display-heading');
+currentDisplayHeading.hidden = true;
 
 function boundsFormDefaults(rMin = -2, rMax = 2, iMin = -1.2, iMax = 1.5) {
     boundsForm.rMin.value = rMin; 
@@ -182,6 +184,8 @@ juliaForm.addEventListener('submit', (event) => {
     cReal = Number(event.target.cReal.value);
     cImag = Number(event.target.cImag.value);
 
+    currentDisplayHeading.hidden = false;
+    currentDisplayHeading.innerText = 'Julia Set';
     showJulia(math.complex(cReal, cImag));
 
     juliaForm.reset();
@@ -189,6 +193,8 @@ juliaForm.addEventListener('submit', (event) => {
 });
 
 mandelButton.addEventListener('click', () => {
+    currentDisplayHeading.hidden = false;
+    currentDisplayHeading.innerText = 'Mandelbrot Set';
     showMandelbrot();
 });
 
