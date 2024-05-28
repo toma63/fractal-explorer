@@ -3,15 +3,15 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-let rMin = -2.2;
-let rMax = 1;
-let rRangeSize = rMax - rMin;
+let rMin = -2;
+let rMax = 2;
+let rDomainSize = rMax - rMin;
 
 let iMin = -1.2;
 let iMax = 1.2;
-let iDomainSize = iMax - iMin;
+let iRangeSize = iMax - iMin;
 
-let displayRatio = iDomainSize / rRangeSize;
+let displayRatio = iRangeSize / rDomainSize;
 
 // Set the width and height of the canvas
 let canvasWidth = window.innerWidth - 100;
@@ -19,8 +19,8 @@ canvas.width = canvasWidth;
 let canvasHeight = canvasWidth * displayRatio;
 canvas.height = canvasHeight;
 
-let rStep = rRangeSize / canvasWidth;
-let iStep = iDomainSize / canvasHeight;
+let rStep = rDomainSize / canvasWidth;
+let iStep = iRangeSize / canvasHeight;
 
 // Create an ImageData object
 let imageData = ctx.createImageData(canvasWidth, canvasHeight);
@@ -46,7 +46,6 @@ function escapeCount(z = math.complex(0, 0), c = math.complex(0, 0), maxIteratio
         iterations++
         z = math.add(math.multiply(z, z), c);
     }
-    //console.log("iterations: ", iterations);
     return iterations;
 }
 
@@ -80,13 +79,58 @@ function colorMap(iterations) {
 
 // iterate in the complex plain window and color pixels
 // based on the trajectory at each location
-for (let x = 0 ; x < canvasWidth ; x++) {
-    for (let y = 0 ; y < canvasWidth ; y++) {
-        rbgTuple = colorMap(escapeCount(math.complex(0, 0), math.complex(rMin + x * rStep, iMin + y * iStep)));
-        //console.log(`x: ${x} y: ${y} rbg: ${rbgTuple}`);
-        setPixel(imageData, x, y, ...rbgTuple, 255);
+
+// For the Mandelbrot set, c is assigned for each pixel
+function showMandelbrot() {
+    for (let x = 0; x < canvasWidth; x++) {
+        for (let y = 0; y < canvasWidth; y++) {
+            rbgTuple = colorMap(escapeCount(math.complex(0, 0), math.complex(rMin + x * rStep, iMin + y * iStep)));
+            setPixel(imageData, x, y, ...rbgTuple, 255);
+        }
     }
+    // Render the ImageData object to the canvas
+    ctx.putImageData(imageData, 0, 0); 
 }
 
-// Render the ImageData object to the canvas
-ctx.putImageData(imageData, 0, 0);
+// For the Julia set, z is assigned for each pixel, c determines which set
+function showJulia(c = math.complex(-0.79, 0.15)) {
+    for (let x = 0; x < canvasWidth; x++) {
+        for (let y = 0; y < canvasWidth; y++) {
+            rbgTuple = colorMap(escapeCount(math.complex(rMin + x * rStep, iMin + y * iStep), c));
+            setPixel(imageData, x, y, ...rbgTuple, 255);
+        }
+    }
+    // Render the ImageData object to the canvas
+    ctx.putImageData(imageData, 0, 0); 
+}
+
+// get event position within a canvas
+function getCursorPosition(canvas, event) {
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    //console.log("x: " + x + ", y: " + y);
+    return [x, y];
+}
+
+// get a selected box for zooming
+let downX = 0;
+let downY = 0;
+canvas.addEventListener('mousedown', (event) => {
+    let downXY = getCursorPosition(canvas, event);
+    downX = downXY[0];
+    downY = downXY[1];
+});
+
+let upX = 0;
+let upY = 0;
+canvas.addEventListener('mouseup', (event) => {
+    let upXY = getCursorPosition(canvas, event);
+    upX = upXY[0];
+    upY = upXY[1];
+    console.log(`box: ${downX}:${downY} ${upX}:${upY}`);
+});
+
+//showMandelbrot();
+showJulia();
+
