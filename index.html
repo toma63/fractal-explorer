@@ -7,6 +7,40 @@
 </head>
 <body>
     <h1>Fractal Viewer</h1>
+    <section id="form-section">
+        <h2>Domain and Range</h2>
+        <form name="bounds" class="form">
+            <div class="form-item">
+                <label for="min-real">Min Real:</label>
+                <input type="number" id="min-real" name="min-real" required="true" />
+            </div>
+            <div class="form-item">
+                <label for="max-real">Max Real:</label>
+                <input type="number" id="max-real" name="max-real" required="true" />
+            </div>
+            <div class="form-item">
+                <label for="min-imag">Min Imaginary:</label>
+                <input type="number" id="min-imag" name="min-imag" required="true" />
+            </div>
+            <div class="form-item">
+                <label for="max-imag">Max Imaginary:</label>
+                <input type="number" id="max-imag" name="max-imag" required="true" />
+            </div>
+            <button type="submit" value="submit" name="submit" class="submit-button">Set Bounds</button>
+        </form><br>
+        <form name="julia-constant" class=""form>
+            <div class="form-item">
+                <label for="c-real">Julia Constant Real:</label>
+                <input type="number" id="c-real" name="c-real" required="true" />
+            </div>
+            <div class="form-item">
+                <label for="c-imag">Julia Constant Imaginary:</label>
+                <input type="number" id="c-imag" name="c-imag" required="true" />
+            </div>
+            <button type="julia" value="julia" name="julia" class="submit-button">Show Julia Set</button>
+        </form><br>
+        <button type="mandelbrot" value="mandelbrot" name="mandelbrot" class="submit-button">Show Mandelbrot Set</button>
+    </section>
     <h2 id="current-display-heading">Mandelbrot Set</h2>
     <div id="canvas-container">
         <canvas id="canvas"></canvas>
