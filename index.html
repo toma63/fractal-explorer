@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/index.css" />
     <title>Fractal</title>
 </head>
 <body>
@@ -12,34 +13,34 @@
         <form name="bounds" class="form">
             <div class="form-item">
                 <label for="min-real">Min Real:</label>
-                <input type="number" id="min-real" name="min-real" required="true" />
+                <input type="number" step="any" id="min-real" name="rMin" required="true" />
             </div>
             <div class="form-item">
                 <label for="max-real">Max Real:</label>
-                <input type="number" id="max-real" name="max-real" required="true" />
+                <input type="number" step="any" id="max-real" name="rMax" required="true" />
             </div>
             <div class="form-item">
                 <label for="min-imag">Min Imaginary:</label>
-                <input type="number" id="min-imag" name="min-imag" required="true" />
+                <input type="number" step="any" id="min-imag" name="iMin" required="true" />
             </div>
             <div class="form-item">
                 <label for="max-imag">Max Imaginary:</label>
-                <input type="number" id="max-imag" name="max-imag" required="true" />
+                <input type="number" step="any" id="max-imag" name="iMax" required="true" />
             </div>
             <button type="submit" value="submit" name="submit" class="submit-button">Set Bounds</button>
         </form><br>
         <form name="julia-constant" class=""form>
             <div class="form-item">
-                <label for="c-real">Julia Constant Real:</label>
-                <input type="number" id="c-real" name="c-real" required="true" />
+                <label for="c-real" class="v-label">Julia Constant Real:</label>
+                <input type="number" step="any" id="c-real" name="cReal" required="true" />
             </div>
             <div class="form-item">
-                <label for="c-imag">Julia Constant Imaginary:</label>
-                <input type="number" id="c-imag" name="c-imag" required="true" />
+                <label for="c-imag" class="v-label">Julia Constant Imaginary:</label>
+                <input type="number" step="any" id="c-imag" name="cImag" required="true" />
             </div>
-            <button type="julia" value="julia" name="julia" class="submit-button">Show Julia Set</button>
+            <button type="submit" value="julia" name="julia" class="submit-button">Show Julia Set</button>
         </form><br>
-        <button type="mandelbrot" value="mandelbrot" name="mandelbrot" class="submit-button">Show Mandelbrot Set</button>
+        <button type="button" value="mandelbrot" name="mandelbrot" class="submit-button">Show Mandelbrot Set</button>
     </section>
     <h2 id="current-display-heading">Mandelbrot Set</h2>
     <div id="canvas-container">

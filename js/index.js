@@ -13,6 +13,9 @@ let iRangeSize = iMax - iMin;
 
 let displayRatio = iRangeSize / rDomainSize;
 
+let cReal = -0.79;
+let cImag = 0.15;
+
 // Set the width and height of the canvas
 let canvasWidth = window.innerWidth - 100;
 canvas.width = canvasWidth;
@@ -131,6 +134,61 @@ canvas.addEventListener('mouseup', (event) => {
     console.log(`box: ${downX}:${downY} ${upX}:${upY}`);
 });
 
-//showMandelbrot();
-showJulia();
+const boundsForm = document.querySelector("[name='bounds']");
+const juliaForm = document.querySelector("[name='julia-constant']");
+const mandelButton = document.querySelector("[name='mandelbrot']");
+
+function boundsFormDefaults(rMin = -2, rMax = 2, iMin = -1.2, iMax = 1.5) {
+    boundsForm.rMin.value = rMin; 
+    boundsForm.rMax.value = rMax; 
+    boundsForm.iMin.value = iMin; 
+    boundsForm.iMax.value = iMax;
+}
+
+function juliaFormDefaults(cReal = -0.79, cImag = 0.15) {
+    juliaForm.cReal.value = cReal; 
+    juliaForm.cImag.value = cImag; 
+}
+
+boundsFormDefaults();
+juliaFormDefaults();
+
+boundsForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    rMin = Number(event.target.rMin.value);
+    rMax = Number(event.target.rMax.value); 
+    iMin = Number(event.target.iMin.value); 
+    iMax = Number(event.target.iMax.value);
+
+    rDomainSize = rMax - rMin;
+    iRangeSize = iMax - iMin;
+
+    displayRatio = iRangeSize / rDomainSize;
+
+    canvasHeight = canvasWidth * displayRatio;
+    canvas.height = canvasHeight;
+
+    rStep = rDomainSize / canvasWidth;
+    iStep = iRangeSize / canvasHeight;
+
+    boundsForm.reset();
+    boundsFormDefaults(rMin, rMax, iMin, iMax);
+});
+
+juliaForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    cReal = Number(event.target.cReal.value);
+    cImag = Number(event.target.cImag.value);
+
+    showJulia(math.complex(cReal, cImag));
+
+    juliaForm.reset();
+    juliaFormDefaults(cReal, cImag);
+});
+
+mandelButton.addEventListener('click', () => {
+    showMandelbrot();
+});
 

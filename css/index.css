@@ -1,3 +1,23 @@
-h1 {
-    color:rgb(131, 46, 250)
+
+.submit-button {
+    background-color:rgb(184, 207, 245);
+    border-radius: 0.25em;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.form {
+    display: flex;
+    flex-direction:row;
+}
+label {
+    display: inline;
+    padding-right: 10px;
+    padding-left: 10px;
+    width: 5em;
+}
+.v-label {
+    display: inline-block;
+    padding-right: 10px;
+    padding-left: 10px;
+    width: 12em;  
 }
